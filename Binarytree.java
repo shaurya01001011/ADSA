@@ -1,7 +1,6 @@
-
 import java.util.Scanner;
 
-public class BinarySearchTree {
+public class Binarytree {
     class Node {
         int data;
         Node left, right;
@@ -14,7 +13,7 @@ public class BinarySearchTree {
 
     Node root;
 
-    public BinarySearchTree() {
+    public Binarytree() {
         root = null;
     }
 
@@ -27,18 +26,30 @@ public class BinarySearchTree {
             root = new Node(data);
             return root;
         }
-
         if (data < root.data) {
             root.left = insertRec(root.left, data);
         } else if (data > root.data) {
             root.right = insertRec(root.right, data);
         }
-
         return root;
     }
 
+    public boolean search(int key) {
+        return searchRec(root, key);
+    }
+
+    private boolean searchRec(Node root, int key) {
+        if (root == null || root.data == key) {
+            return root != null;
+        }
+        if (key < root.data) {
+            return searchRec(root.left, key);
+        }
+        return searchRec(root.right, key);
+    }
+
     public void inOrder() {
-        System.out.print("In-order traversal: ");
+        System.out.print("In-order: ");
         inOrderRec(root);
         System.out.println();
     }
@@ -52,7 +63,7 @@ public class BinarySearchTree {
     }
 
     public void preOrder() {
-        System.out.print("Pre-order traversal: ");
+        System.out.print("Pre-order: ");
         preOrderRec(root);
         System.out.println();
     }
@@ -66,7 +77,7 @@ public class BinarySearchTree {
     }
 
     public void postOrder() {
-        System.out.print("Post-order traversal: ");
+        System.out.print("Post-order: ");
         postOrderRec(root);
         System.out.println();
     }
@@ -80,37 +91,35 @@ public class BinarySearchTree {
     }
 
     public static void main(String[] args) {
-        BinarySearchTree bst = new BinarySearchTree();
+        Binarytree bst = new Binarytree();
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter the number of nodes to insert: ");
+        System.out.print("Enter number of nodes: ");
         int numNodes = scanner.nextInt();
 
         if (numNodes <= 0) {
-            System.out.println("Please enter a positive number of nodes.");
+            System.out.println("Please enter a positive number.");
             scanner.close();
             return;
         }
 
-        System.out.println("Enter " + numNodes + " integer values for the BST:");
+        System.out.println("Enter " + numNodes + " values:");
         for (int i = 0; i < numNodes; i++) {
-            System.out.print("Enter value " + (i + 1) + ": ");
-            int value;
-            try {
-                value = scanner.nextInt();
-                bst.insert(value);
-            } catch (Exception e) {
-                System.out.println("Invalid input. Please enter an integer.");
-                scanner.next();
-                i--;
-            }
+            System.out.print("Value " + (i + 1) + ": ");
+            bst.insert(scanner.nextInt());
         }
 
         bst.inOrder();
         bst.preOrder();
         bst.postOrder();
 
+        System.out.print("Enter a value to search: ");
+        int searchValue = scanner.nextInt();
+        System.out.println(searchValue + (bst.search(searchValue) ? " found" : " not found"));
+
         scanner.close();
     }
-}   
+}
+ 
+
 
